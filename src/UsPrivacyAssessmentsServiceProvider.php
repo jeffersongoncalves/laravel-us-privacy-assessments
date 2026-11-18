@@ -2,6 +2,7 @@
 
 namespace JeffersonGoncalves\UsPrivacyAssessments;
 
+use JeffersonGoncalves\UsPrivacyAssessments\Commands\AssessmentsCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -10,9 +11,14 @@ class UsPrivacyAssessmentsServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('laravel-us-privacy-assessments')
+            ->name('us-privacy-assessments')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigrations();
+            ->hasMigrations(['create_us_privacy_assessments_table'])
+            ->hasCommand(AssessmentsCommand::class);
+    }
+
+    public function packageRegistered(): void
+    {
+        $this->app->singleton(AssessmentManager::class);
     }
 }
